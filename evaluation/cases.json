@@ -1,0 +1,31 @@
+[
+  {
+    "id": "srs",
+    "query": "Software Requirements Specification",
+    "expectedTitle": "FDA Device Software Premarket Guidance (2023)",
+    "expectedPage": "PDF page 22"
+  },
+  {
+    "id": "anomalies",
+    "query": "unresolved software anomalies",
+    "expectedTitle": "FDA Device Software Premarket Guidance (2023)"
+  },
+  {
+    "id": "sbom",
+    "query": "software bill of materials SBOM",
+    "expectedTitle": "FDA Cybersecurity Guidance (2026)",
+    "expectedPage": "PDF page 21"
+  },
+  {
+    "id": "ots-risk",
+    "query": "off-the-shelf software risk assessment",
+    "expectedTitle": "FDA Off-The-Shelf Software Guidance (2023)",
+    "expectedPage": "PDF page 9"
+  },
+  {
+    "id": "cyber-plan",
+    "query": "cybersecurity management plan",
+    "expectedTitle": "FDA Cybersecurity Guidance (2026)",
+    "expectedPage": "PDF page 34"
+  }
+]

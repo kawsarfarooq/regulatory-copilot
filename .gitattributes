@@ -1,0 +1,9 @@
+* text=auto
+
+# Scripts and configuration copied to Linux must retain LF line endings.
+*.sh text eol=lf
+*.py text eol=lf
+*.mjs text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf

@@ -1,0 +1,104 @@
+{
+  "generatedAt": "2026-07-22T21:17:33.931Z",
+  "total": 5,
+  "passedCount": 5,
+  "results": [
+    {
+      "id": "srs",
+      "query": "Software Requirements Specification",
+      "expectedTitle": "FDA Device Software Premarket Guidance (2023)",
+      "expectedPage": "PDF page 22",
+      "actualTitle": "FDA Device Software Premarket Guidance (2023)",
+      "pageMarkers": [
+        "PDF page 22"
+      ],
+      "evidenceCharacters": 2700,
+      "checks": {
+        "found": true,
+        "title": true,
+        "page": true,
+        "noTableOfContents": true,
+        "boundedEvidence": true
+      },
+      "passed": true
+    },
+    {
+      "id": "anomalies",
+      "query": "unresolved software anomalies",
+      "expectedTitle": "FDA Device Software Premarket Guidance (2023)",
+      "expectedPage": null,
+      "actualTitle": "FDA Device Software Premarket Guidance (2023)",
+      "pageMarkers": [
+        "PDF page 16",
+        "PDF page 17"
+      ],
+      "evidenceCharacters": 2631,
+      "checks": {
+        "found": true,
+        "title": true,
+        "page": true,
+        "noTableOfContents": true,
+        "boundedEvidence": true
+      },
+      "passed": true
+    },
+    {
+      "id": "sbom",
+      "query": "software bill of materials SBOM",
+      "expectedTitle": "FDA Cybersecurity Guidance (2026)",
+      "expectedPage": "PDF page 21",
+      "actualTitle": "FDA Cybersecurity Guidance (2026)",
+      "pageMarkers": [
+        "PDF page 21"
+      ],
+      "evidenceCharacters": 2462,
+      "checks": {
+        "found": true,
+        "title": true,
+        "page": true,
+        "noTableOfContents": true,
+        "boundedEvidence": true
+      },
+      "passed": true
+    },
+    {
+      "id": "ots-risk",
+      "query": "off-the-shelf software risk assessment",
+      "expectedTitle": "FDA Off-The-Shelf Software Guidance (2023)",
+      "expectedPage": "PDF page 9",
+      "actualTitle": "FDA Off-The-Shelf Software Guidance (2023)",
+      "pageMarkers": [
+        "PDF page 9",
+        "PDF page 10"
+      ],
+      "evidenceCharacters": 2846,
+      "checks": {
+        "found": true,
+        "title": true,
+        "page": true,
+        "noTableOfContents": true,
+        "boundedEvidence": true
+      },
+      "passed": true
+    },
+    {
+      "id": "cyber-plan",
+      "query": "cybersecurity management plan",
+      "expectedTitle": "FDA Cybersecurity Guidance (2026)",
+      "expectedPage": "PDF page 34",
+      "actualTitle": "FDA Cybersecurity Guidance (2026)",
+      "pageMarkers": [
+        "PDF page 34"
+      ],
+      "evidenceCharacters": 2122,
+      "checks": {
+        "found": true,
+        "title": true,
+        "page": true,
+        "noTableOfContents": true,
+        "boundedEvidence": true
+      },
+      "passed": true
+    }
+  ]
+}

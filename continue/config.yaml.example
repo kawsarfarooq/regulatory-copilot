@@ -1,0 +1,36 @@
+name: Regulatory Copilot
+version: 0.0.1
+schema: v1
+
+models:
+  - name: Qwen Regulatory Coder
+    provider: openai
+    model: qwen-coder
+    apiBase: http://127.0.0.1:8000/v1
+    apiKey: "REPLACE_WITH_CURRENT_VLLM_API_KEY"
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultCompletionOptions:
+      contextLength: 8192
+      maxTokens: 768
+      temperature: 0.1
+    systemMessage: >
+      You are an on-premise assistant for regulated medical-device software.
+      For regulatory questions, use the Outline knowledge tool and answer only
+      from retrieved evidence. Cite the document title and PDF page marker.
+      Clearly distinguish binding legal requirements from nonbinding FDA
+      recommendations. Never call a recommendation a legal requirement unless
+      the retrieved source explicitly establishes that distinction. If the
+      evidence is insufficient, say so instead of guessing.
+
+mcpServers:
+  - name: Outline Regulatory Knowledge
+    type: stdio
+    command: node
+    args:
+      - REPLACE_WITH_REPOSITORY_PATH/outline-mcp/outline_mcp_server.mjs
+    env:
+      OUTLINE_BASE_URL: http://127.0.0.1:3000
+      OUTLINE_TOKEN_FILE: REPLACE_WITH_REPOSITORY_PATH/outline-mcp/outline-token.txt

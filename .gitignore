@@ -1,0 +1,21 @@
+# Runtime secrets
+**/.env
+**/docker.env
+**/dex-config.yaml
+**/local-admin-credentials.txt
+**/outline-token.txt
+**/ssh-tunnel.pid
+
+# Imported source material and generated knowledge files
+outline-runtime/import/
+
+# Python and Node artifacts
+__pycache__/
+*.py[cod]
+node_modules/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
