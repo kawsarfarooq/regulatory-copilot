@@ -1,91 +1,78 @@
 # Regulatory Copilot
 
-An on-premise regulatory software-development assistant built from the architecture proposed in the project brief:
+Regulatory Copilot is an on-premise VS Code assistant for regulated software development. It combines private code generation with controlled retrieval from an approved knowledge base, allowing responses to include source and PDF page citations.
 
-- **Continue.dev** supplies the VS Code chat and agent interface.
-- **Qwen2.5-Coder 14B AWQ** runs on a private GPU server through **vLLM**.
-- **Outline** stores approved regulatory knowledge.
-- A read-only **Model Context Protocol (MCP)** adapter lets Continue search Outline and retrieve compact, page-traceable evidence.
+**Status:** Working technical prototype. Not validated for production or regulatory decision-making.
 
-The prototype is intentionally split between a developer workstation and a GPU server. No regulatory documents or prompts are sent to a commercial model API.
+## Capabilities
 
-## Demonstrated result
+- Chat, edit, and agent workflows inside VS Code through Continue.
+- Private inference using Qwen2.5-Coder 14B AWQ served by vLLM.
+- Secure workstation-to-server access through an SSH local forward.
+- Read-only regulatory search and retrieval from Outline through MCP.
+- Page-traceable evidence from imported source documents.
+- Repeatable retrieval evaluation and repository safety checks.
 
-The end-to-end prototype retrieved FDA Software Requirements Specification guidance from **FDA Device Software Premarket Guidance (2023), PDF page 22**, and answered inside Continue with a source citation.
+## Architecture
 
-```mermaid
-flowchart LR
-    subgraph Workstation[Developer workstation]
-        VS[VS Code + Continue]
-        MCP[Read-only Outline MCP adapter]
-        OUT[Outline knowledge base]
-        DB[(PostgreSQL)]
-        VS --> MCP
-        MCP --> OUT
-        OUT --> DB
-    end
+```text
+Developer workstation                         Private GPU server
 
-    subgraph Server[Private GPU server]
-        V[vLLM OpenAI-compatible API]
-        Q[Qwen2.5-Coder 14B AWQ]
-        V --> Q
-    end
-
-    VS -->|SSH local forward| V
+VS Code + Continue  ───── SSH tunnel ──────>  vLLM + Qwen2.5-Coder
+        │
+        └──── read-only MCP adapter ────────>  Outline knowledge base
+                                                   │
+                                              PostgreSQL + Redis
 ```
 
-## Repository layout
+Outline runs on the workstation in the prototype because the managed GPU environment does not expose a Docker daemon. The component can be moved to an approved shared server without changing the integration model.
+
+## Components
 
 | Path | Purpose |
 | --- | --- |
 | `continue/` | Sanitized Continue configuration example |
 | `outline-mcp/` | Read-only MCP adapter and token setup |
-| `outline-runtime/` | Local Outline, PostgreSQL, Redis, Dex, and Mailpit stack |
-| `server/` | vLLM/Qwen server templates |
-| `evaluation/` | Repeatable retrieval evaluation |
-| `docs/` | Setup, architecture, security, and demonstration guides |
-
-See [`docs/proposal-alignment.md`](docs/proposal-alignment.md) for an explicit mapping between the brief and this prototype.
+| `outline-runtime/` | Outline, PostgreSQL, Redis, Dex, and Mailpit runtime |
+| `server/` | vLLM and model-serving templates |
+| `evaluation/` | Retrieval test cases and results |
+| `docs/` | Architecture, setup, security, and implementation documentation |
 
 ## Quick start
 
-1. Prepare the vLLM server using [`server/README.md`](server/README.md).
-2. Start the local knowledge base using [`outline-runtime/README.md`](outline-runtime/README.md).
-3. Import approved documents into an Outline collection.
-4. Create a scoped Outline API token and configure [`outline-mcp/`](outline-mcp/README.md).
-5. Copy [`continue/config.yaml.example`](continue/config.yaml.example) to Continue's Main Config and replace placeholders.
-6. Start the SSH tunnel and use Continue **Agent** mode.
+1. Configure and start vLLM using [`server/README.md`](server/README.md).
+2. Start Outline using [`outline-runtime/README.md`](outline-runtime/README.md).
+3. Import approved documents and create a scoped Outline API token.
+4. Configure the MCP adapter using [`outline-mcp/README.md`](outline-mcp/README.md).
+5. Add [`continue/config.yaml.example`](continue/config.yaml.example) to Continue and start the SSH tunnel.
 
-The complete walkthrough is in [`docs/setup.md`](docs/setup.md).
+See [`docs/setup.md`](docs/setup.md) for the complete procedure.
 
-Run the shareability checks before committing:
+## Validation
+
+The current retrieval evaluation passed **5/5 cases** across FDA software, cybersecurity, SBOM, anomaly, and off-the-shelf software topics. Checks cover source selection, page-marker presence, table-of-contents exclusion, and evidence-size limits.
+
+Run the repository checks before committing:
 
 ```powershell
 .\Verify-Repository.ps1
 ```
 
-## Example grounded prompt
+## Security and scope
 
-```text
-Call outline_research exactly once with:
-- query: "Software Requirements Specification"
-- max_chars: 3500
+- MCP access is limited to read-only research and source-listing tools.
+- Runtime credentials and imported documents are excluded from version control.
+- Prototype services bind to loopback interfaces.
+- Model access is carried through SSH rather than exposed publicly.
+- Generated regulatory conclusions require review against authoritative sources.
 
-Using only the returned evidence, explain FDA's SRS recommendations in no
-more than 250 words. Cite the Outline document title and PDF page marker.
-Do not use the table of contents.
-```
+Production use additionally requires enterprise authentication, TLS, centralized secrets, backups, monitoring, access reviews, document governance, and formal validation.
 
-## Safety properties
+## Documentation
 
-- The published MCP surface is read-only: `outline_research` and `outline_list_sources`.
-- Runtime API keys and generated credentials are excluded by `.gitignore`.
-- Outline, PostgreSQL, Redis, Dex, Mailpit, and vLLM bind to loopback interfaces in the prototype configuration.
-- The assistant is instructed to distinguish binding requirements from nonbinding FDA recommendations.
-- Retrieval results preserve `PDF page N` markers for traceability.
-
-This is a technical prototype, not legal or regulatory advice. Every material conclusion must be reviewed against the authoritative source and the applicable submission context.
-
-## Current scope
-
-The prototype demonstrates private inference, knowledge retrieval, citations, and constrained agent access. Production deployment would additionally require organizational SSO, TLS, backups, monitoring, formal access reviews, document lifecycle governance, and validated evaluation criteria.
+- [`docs/implementation-report.md`](docs/implementation-report.md) — delivery status, decisions, constraints, and next steps.
+- [`docs/architecture.md`](docs/architecture.md) — component and data-flow design.
+- [`docs/setup.md`](docs/setup.md) — deployment and configuration procedure.
+- [`docs/security.md`](docs/security.md) — security controls and production gaps.
+- [`docs/proposal-alignment.md`](docs/proposal-alignment.md) — mapping between the proposed and implemented architecture.
+- [`evaluation/results/latest.md`](evaluation/results/latest.md) — latest retrieval results.
