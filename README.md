@@ -15,8 +15,6 @@ Regulatory Copilot is an on-premise VS Code assistant for regulated software dev
 
 ## Architecture
 
-## System Architecture
-
 <p align="center">
   <img src="docs/SysArt.jpeg" width="900">
 </p>
