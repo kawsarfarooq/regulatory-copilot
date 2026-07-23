@@ -15,15 +15,11 @@ Regulatory Copilot is an on-premise VS Code assistant for regulated software dev
 
 ## Architecture
 
-```text
-Developer workstation                         Private GPU server
+## System Architecture
 
-VS Code + Continue  ───── SSH tunnel ──────>  vLLM + Qwen2.5-Coder
-        │
-        └──── read-only MCP adapter ────────>  Outline knowledge base
-                                                   │
-                                              PostgreSQL + Redis
-```
+<p align="center">
+  <img src="docs/SysArt.jpeg" width="900">
+</p>
 
 Outline runs on the workstation in the prototype because the managed GPU environment does not expose a Docker daemon. The component can be moved to an approved shared server without changing the integration model.
 
